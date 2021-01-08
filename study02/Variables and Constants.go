@@ -37,19 +37,31 @@ var (
 
 )
 **/
+
+/*
+go语言推荐驼峰式命名
+
+var Student_name	string
+var studentName		string 推荐这种小驼峰
+var StudentName		string
+
+**/
+
 var (
 	name string
 	age  int
 	isok bool
-	//card
-	// go语言中变量声明后必须使用，否则过不了编译
 )
 
 func main() {
 	name = "小明"
 	age = 18
-	fmt.Print(isok)             //fmt 包是 打印  print 打印一句话，没有结束符
-	fmt.Printf("name:%s", name) //printf 格式化输出   %s是占位符 使用name的值去替换%s
-	fmt.Println(age)            // printlf 打印完指定的内容之后会在后面加一个换行符
+	isok = true
+	//card = 123456
+	// go语言中非全局变量声明后必须使用，否则过不了编译
+	fmt.Print(isok) //fmt 包是 打印  print 打印一句话，没有结束符
+	fmt.Println()
+	fmt.Printf("name:%s\n", name) //printf 格式化输出   %s是占位符 使用name的值去替换%s
+	fmt.Println(age)              // printlf 打印完指定的内容之后会在后面加一个换行符
 
 }
