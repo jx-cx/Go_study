@@ -30,6 +30,20 @@ const (
 	c4        //3
 )
 
+const (
+	d1, d2 = iota + 1, iota + 2 //d1=1 d2=2  iota=0
+	d3, d4 = iota + 1, iota + 2 //d3=2,d4=3  iota=1
+)
+
+const (
+	_  = iota
+	kb = 1 << (10 * iota) // 1 往左移动10位转换为2进制=1024
+	mb = 1 << (10 * iota) //
+	gb = 1 << (10 * iota)
+	tb = 1 << (10 * iota)
+	pb = 1 << (10 * iota)
+)
+
 func main() {
 	//pi = 3.14   常量的值在声明之后无法改变
 	fmt.Println("p1=", p1)
