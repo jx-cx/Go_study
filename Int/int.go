@@ -26,8 +26,19 @@ package main
 import "fmt"
 
 func main() {
-	var a int = 10 //十进制
+	var a int = 10 //十进制   0-9
 	fmt.Printf("%d \n", a)
-	fmt.Printf("%b \n", a) // %b 二进制
+	fmt.Printf("%b \n", a) // %b 把十进制转换成二进制  0-1
+	fmt.Printf("%o \n", a) // %b 把十进制转换成八进制
+	fmt.Printf("%x \n", a) // %b 把十进制转换成十六进制
+	var b int = 077        // 0开头代表八进制数  0-7
+	fmt.Printf("%d \n", b)
+	d := 0x123456 // 十六进制数   0- f
+	fmt.Printf("%d \n", d)
+
+	fmt.Printf("%T\n", a) //查看变量类型
+
+	e := int8(9) //指定类型，否则默认int10
+	fmt.Printf("%T\n", e)
 
 }
