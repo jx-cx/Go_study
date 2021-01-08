@@ -53,6 +53,9 @@ var (
 	isok bool
 )
 
+var aa, bb = "小红", 18 //初始化多个变量
+var shuzi = 1         // 类型推导  var shuzi int =1
+
 func main() {
 	name = "小明"
 	age = 18
@@ -62,6 +65,8 @@ func main() {
 	fmt.Print(isok) //fmt 包是 打印  print 打印一句话，没有结束符
 	fmt.Println()
 	fmt.Printf("name:%s\n", name) //printf 格式化输出   %s是占位符 使用name的值去替换%s
-	fmt.Println(age)              // printlf 打印完指定的内容之后会在后面加一个换行符
+	fmt.Println(age)              // println 打印完指定的内容之后会在后面加一个换行符
+	n := 20                       //在函数内容可以使用短变量声明
+	fmt.Println(n)
 
 }
