@@ -53,6 +53,8 @@ func main() {
 		e = "哈哈"
 	)
 	fmt.Printf("a:%T b:%T c:%T d:%T e:%T", a, b, c, d, e)
+	fmt.Println()
+
 	sum := 0
 	for _, char := range aa {
 		if unicode.Is(unicode.Han, char) {
