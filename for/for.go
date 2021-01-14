@@ -1,5 +1,25 @@
 package main
 
+/*
+for(循环结构)
+Go 语言中的所有循环类型均可以使用for关键字来完成。
+
+for循环的基本格式如下：
+
+for 初始语句;条件表达式;结束语句{
+    循环体语句
+}
+条件表达式返回true时循环体不停地进行循环，直到条件表达式返回false时自动退出循环。
+
+无限循环
+for {
+    循环体语句
+}
+
+for循环可以通过break、goto、return、panic语句强制退出循环。
+
+**/
+
 import "fmt"
 
 func main() {
@@ -43,6 +63,25 @@ func main() {
 		}
 		fmt.Println()
 	}
-	return
+	fmt.Println()
+
+	for a1 := 0; a1 < 10; a1++ {
+		if a1 == 5 {
+			break // 当a1=5时，break跳出循环
+		}
+		fmt.Println(a1)
+	}
+	fmt.Println("over")
+	fmt.Println()
+
+	for a1 := 0; a1 < 10; a1++ {
+		if a1 == 5 {
+			continue // 当a1=5时，continue跳出本次循环
+		}
+		fmt.Println(a1)
+	}
+	fmt.Println("over")
+
+	
 
 }
