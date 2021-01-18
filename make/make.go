@@ -19,6 +19,6 @@ func main() {
 	s1 := make([]int, 5, 10) //如果cap不写。则默认和size一致，则cap=5
 	fmt.Printf("s1:%v s1 len:%d s1 cap:%d\n", s1, len(s1), cap(s1))
 
-	s2 := make([]int, 0, 10) //
+	s2 := make(	[]int, 0, 10) //
 	fmt.Printf("s1:%v s1 len:%d s1 cap:%d\n", s2, len(s2), cap(s2))
 }

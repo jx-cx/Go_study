@@ -74,7 +74,7 @@ func main() {
 	for i := 0; i < len(s1); i++ {
 		s2 += s1[i]
 	}
-	fmt.Println(s2)
+	fmt.Println(s2)		
 
 	for _, v1 := range s1 {
 		s3 += v1
