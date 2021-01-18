@@ -103,5 +103,5 @@ func main() {
 	m["q1mi"] = s
 	s = append(s[:1], s[2:]...)
 	fmt.Printf("%+v\n", s)
-	fmt.Printf("%+v\n", m["q1mi"])
+	fmt.Printf("%+v\n", m["q1mi1"])
 }
