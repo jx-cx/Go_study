@@ -82,6 +82,4 @@ func main() {
 	}
 	fmt.Println("over")
 
-	
-
 }

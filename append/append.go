@@ -24,5 +24,6 @@ func main() {
 	s2 := []int{5, 6}
 	s1 = append(s1, s2...) // s2... 表示将s2拆开，全部元素追加到s1中
 	fmt.Printf("s1:%v s1 len:%d s1 cap:%d\n", s1, len(s1), cap(s1))
+	//
 
 }
