@@ -51,4 +51,5 @@ func main() {
 	fmt.Println("a2=", a2)
 	fmt.Println("a4=", a4)
 	fmt.Println("c4=", a4)
+
 }

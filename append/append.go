@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 /*
 Go语言的内建函数append()可以为切片动态添加元素。 可以一次添加一个元素，可以添加多个元素，也可以添加另一个切片中的元素（后面加…）。
@@ -19,11 +21,11 @@ func main() {
 	s1 := []int{1, 2, 3}
 	//调用append函数必须用原来的切片变量接收返回值
 	//append 追加元素，原来的底层数组放不下的时候，go底层会把底层数组换一个
-	s1 = append(s1, 4)
+	s1 = append(
+		s1, 4,
+	)
 	fmt.Printf("s1:%v s1 len:%d s1 cap:%d\n", s1, len(s1), cap(s1))
 	s2 := []int{5, 6}
 	s1 = append(s1, s2...) // s2... 表示将s2拆开，全部元素追加到s1中
 	fmt.Printf("s1:%v s1 len:%d s1 cap:%d\n", s1, len(s1), cap(s1))
-	//
-
 }
