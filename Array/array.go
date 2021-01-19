@@ -24,7 +24,7 @@ func main() {
 	fmt.Printf("%T\n", a)
 	fmt.Printf("%T\n", b)
 	//数组初始化
-	c = [2]string{"哈哈", "嘿嘿"} //方式1
+	c = [2]string{"哈哈1", "嘿嘿"} //方式1
 	fmt.Printf("%T\n", c)
 	fmt.Println(c)
 	d := [...]int{1, 2, 3} //方法2 根据初始值自动推断数组的长度
