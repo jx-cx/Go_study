@@ -40,6 +40,9 @@ func f3() int {
 	ret := 3
 	return ret
 }
+func ()  {
+	
+}
 
 // 多个返回值
 func f4() (int, string) {
@@ -61,6 +64,6 @@ func main() {
 	_, n := f4()
 	fmt.Println(n)
 
-	f6("hah")
-	f6("hah", 1, 2, 3, 4, 5, 6, 7, 8, 9)
+	f6("hah1")
+	f6("hah1", 1, 2, 3, 4, 5, 6, 7, 8, 9)
 }
