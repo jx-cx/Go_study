@@ -40,9 +40,6 @@ func f3() int {
 	ret := 3
 	return ret
 }
-func ()  {
-	
-}
 
 // 多个返回值
 func f4() (int, string) {
