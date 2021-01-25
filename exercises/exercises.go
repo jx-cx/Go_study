@@ -13,7 +13,7 @@ var aa string = "how do you do"
 var (
 	bb string = "hello小伙子"
 	cc int
-	dd = "上海自来水公司来自海上"
+	dd = "上海自来水来自海上"
 )
 
 func main() {
@@ -55,12 +55,12 @@ func main() {
 	fmt.Println(cc)
 	// 练习4  回文判断
 	d := make([]rune, 0, len(dd))
-	for _, a := range d {
+	for _, a := range dd {
 		d = append(d, a)
 	}
 
 	for i := 0; i < len(d)/2; i++ {
-		if d[1] != d[len(d)-1-i] {
+		if d[i] != d[len(d)-1-i] {
 			fmt.Println("不是回文")
 			return
 		}
