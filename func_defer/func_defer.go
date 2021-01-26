@@ -45,11 +45,35 @@ func f4() (x int) {
 	}(x)
 	return 5
 }
-
+func calc(index string, a, b int) int {
+	ret := a + b
+	fmt.Println(index, a, b, ret)
+	return ret
+}
 func main() {
 	deferdemo()
+	fmt.Println()
 	fmt.Println(f1())
+	fmt.Println()
 	fmt.Println(f2())
+	fmt.Println()
+
 	fmt.Println(f3())
+	fmt.Println()
+
 	fmt.Println(f4())
+	fmt.Println()
+
+	x := 1
+	y := 2
+	defer calc("AA", x, calc("A", x, y))
+	//defer calc("AA", 1, calc("A", 1, 2))
+	//defer calc("AA", 1,) "A", 1, 2,3
+	x = 10
+	defer calc("BB", x, calc("B", x, y))
+	//	defer calc("BB", 10) "B", 10, 2,12
+	y = 20
+
+	// "BB", 10,12 22
+
 }
