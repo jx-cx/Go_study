@@ -43,6 +43,9 @@ func (c cat) say() {
 
 接口的实现就是这么简单，只要实现了接口中的所有方法，就实现了这个接口。
 
+空接口
+var m map[string]interface{}
+
 */
 import "fmt"
 
