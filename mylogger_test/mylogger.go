@@ -61,15 +61,15 @@ func getlogString(lv LogLevel) string {
 	return "DEBUG"
 }
 
-func getInfo(skip int) (funcname, fileName string, lineNO int) {
-	pc, funcname, lineNO, ok := runtime.Caller(skip)
-	if ok {
+func getInfo(skip int) (funcName, fileName string, lineNO int) {
+	pc, file, lineNO, ok := runtime.Caller(skip)
+	if ok == false {
 		fmt.Printf("runetime.Caller() failed\n")
 		return
 	}
-	funcname = runtime.FuncForPC(pc).Name()
-	fileName = path.Base(funcname)
-	fileName = strings.Split(funcname, ".")[1]
+	funcName = runtime.FuncForPC(pc).Name()
+	fileName = path.Base(file)
+	fileName = strings.Split(file, ".")[1]
 	return
 }
 
@@ -93,10 +93,11 @@ func (l Logger) enable(levellog LogLevel) bool {
 	return levellog >= l.Level
 }
 
-func log(lv LogLevel, msg string) {
+func log(lv LogLevel, format string, a ...interface{}) {
+	msg := fmt.Sprintf(format, a...)
 	now := time.Now()
 	funcName, fileName, lineNo := getInfo(3)
-	fmt.Printf("[%s] [%s] [%s:%s:%d] %s\n", now.Format("2006-01-02 15:04:05"), getlogString(lv), fileName, funcName, lineNo, msg)
+	fmt.Printf("[%s] [%s] [%s: %s: %d] %s\n", now.Format("2006-01-02 15:04:05"), getlogString(lv), fileName, funcName, lineNo, msg)
 }
 
 func (l Logger) Debug(msg string) {
@@ -105,40 +106,42 @@ func (l Logger) Debug(msg string) {
 	}
 }
 
-func (l Logger) Info(msg string) {
+func (l Logger) Info(format string, a ...interface{}) {
 	if l.enable(Info) {
-		log(Info, msg)
+		log(Info, format, a...)
 
 	}
 }
-func (l Logger) Warning(msg string) {
+func (l Logger) Warning(format string, a ...interface{}) {
 	if l.enable(WARNING) {
-		log(WARNING, msg)
+		log(WARNING, format, a...)
 	}
 }
 
-func (l Logger) Error(msg string) {
+func (l Logger) Error(format string, a ...interface{}) {
 	if l.enable(ERROR) {
-		log(ERROR, msg)
+		log(ERROR, format, a...)
 
 	}
 }
-func (l Logger) Fatal(msg string) {
+func (l Logger) Fatal(format string, a ...interface{}) {
 	if l.enable(FATAL) {
-		log(FATAL, msg)
+		log(FATAL, format, a...)
 
 	}
 }
 
 func main() {
-	log := Newlog("debug")
+	log := Newlog("error")
 	for {
 		log.Debug("这是Debug日志")
 		log.Info("这是Info日志")
 		log.Warning("这是Warning日志")
-		log.Error("这是Error日志")
+		id := 1000
+		name := "嘿嘿"
+		log.Error("这是Error日志,%d,%s", id, name)
 		log.Fatal("这是Fatal日志")
-		time.Sleep(time.Second)
+		time.Sleep(time.Second * 3)
 
 	}
 }
