@@ -138,7 +138,7 @@ func main() {
 		log.Info("这是Info日志")
 		log.Warning("这是Warning日志")
 		id := 1000
-		name := "嘿嘿"
+		name := "嘿 嘿"
 		log.Error("这是Error日志,%d,%s", id, name)
 		log.Fatal("这是Fatal日志")
 		time.Sleep(time.Second * 3)
