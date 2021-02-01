@@ -77,6 +77,7 @@ func filewrite4() {
 			tmpobj.Write(x[:n])
 			break
 		}
+
 		if err != nil {
 			fmt.Printf(" 文件打开错误，%v\n", err)
 			return
