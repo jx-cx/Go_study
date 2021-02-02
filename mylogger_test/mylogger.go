@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"os"
 	"path"
 	"runtime"
 	"strings"
@@ -22,7 +23,7 @@ const (
 )
 
 func parseloglevel(s string) (LogLevel, error) {
-	s = strings.ToLower(s)
+	s = strings.ToLower(s) // 强转
 	switch s {
 	case "debug":
 		return DEBUG, nil
@@ -74,65 +75,114 @@ func getInfo(skip int) (funcName, fileName string, lineNO int) {
 }
 
 // logger 日志结构体
-type Logger struct {
+type ConsoleLogger struct {
 	Level LogLevel
 }
 
+func (f *Fileogger) enable(levellog LogLevel) bool {
+	return levellog >= f.level
+}
+
+func (f *Fileogger) log(lv LogLevel, format string, a ...interface{}) {
+	if f.enable(lv) {
+		msg := fmt.Sprintf(format, a...) // 格式化赋值给msg
+		now := time.Now()
+		funcName, fileName, lineNo := getInfo(3)
+		fmt.Fprintf(f.fileObj, "[%s] [%s] [%s: %s: %d] %s\n", now.Format("2006-01-02 15:04:05"), getlogString(lv), fileName, funcName, lineNo, msg)
+		if lv >= ERROR {
+			fmt.Fprintf(f.errfileObj, "[%s] [%s] [%s: %s: %d] %s\n", now.Format("2006-01-02 15:04:05"), getlogString(lv), fileName, funcName, lineNo, msg)
+		}
+
+	}
+}
+func (f *Fileogger) Debug(format string, a ...interface{}) {
+	f.log(DEBUG, format, a...)
+}
+
+func (f *Fileogger) Info(format string, a ...interface{}) {
+
+	f.log(Info, format, a...)
+
+}
+func (f *Fileogger) Warning(format string, a ...interface{}) {
+	f.log(WARNING, format, a...)
+
+}
+
+func (f *Fileogger) Error(format string, a ...interface{}) {
+	f.log(ERROR, format, a...)
+
+}
+func (f *Fileogger) Fatal(format string, a ...interface{}) {
+	f.log(FATAL, format, a...)
+
+}
+
 // Newlog 构造函数
-func Newlog(levelStr string) Logger {
+func Newlog(levelStr string) ConsoleLogger {
 	level, err := parseloglevel(levelStr)
 	if err != nil {
 		panic(err)
 	}
-	return Logger{
+	return ConsoleLogger{
 		Level: level,
 	}
 
 }
-func (l Logger) enable(levellog LogLevel) bool {
-	return levellog >= l.Level
+
+// 往文件里面写日志
+type Fileogger struct {
+	level       LogLevel
+	filepath    string // 日志保存的路径
+	filename    string //日志保存的名称
+	fileObj     *os.File
+	errfileObj  *os.File
+	maxFileSize int64
 }
 
-func log(lv LogLevel, format string, a ...interface{}) {
-	msg := fmt.Sprintf(format, a...)
-	now := time.Now()
-	funcName, fileName, lineNo := getInfo(3)
-	fmt.Printf("[%s] [%s] [%s: %s: %d] %s\n", now.Format("2006-01-02 15:04:05"), getlogString(lv), fileName, funcName, lineNo, msg)
-}
-
-func (l Logger) Debug(msg string) {
-	if l.enable(DEBUG) {
-		log(DEBUG, msg)
+func NewFileLogger(levelStr, fp, fn string, maxSize int64) *Fileogger {
+	LogLevel, err := parseloglevel(levelStr)
+	if err != nil {
+		panic(err)
 	}
+	fl := &Fileogger{
+		level:       LogLevel,
+		filepath:    fp,
+		filename:    fn,
+		maxFileSize: maxSize,
+	}
+	err = fl.initfile()
+	if err != nil {
+		panic(err)
+	}
+	return fl //按照文件路径和文件名打开
 }
 
-func (l Logger) Info(format string, a ...interface{}) {
-	if l.enable(Info) {
-		log(Info, format, a...)
-
+func (f *Fileogger) initfile() error {
+	fullFileName := path.Join(f.filepath, f.filename)
+	fileObj, err := os.OpenFile(fullFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Printf("open log file failed ,err:%v", err)
+		return err
 	}
+	errfileObj, err := os.OpenFile(fullFileName+".err", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Printf("open log file failed ,err:%v", err)
+		return err
+	}
+	f.fileObj = fileObj
+	f.fileObj = errfileObj
+	return nil
 }
-func (l Logger) Warning(format string, a ...interface{}) {
-	if l.enable(WARNING) {
-		log(WARNING, format, a...)
-	}
-}
 
-func (l Logger) Error(format string, a ...interface{}) {
-	if l.enable(ERROR) {
-		log(ERROR, format, a...)
-
-	}
-}
-func (l Logger) Fatal(format string, a ...interface{}) {
-	if l.enable(FATAL) {
-		log(FATAL, format, a...)
-
-	}
+//关闭文件
+func (f *Fileogger) Close() {
+	f.fileObj.Close()
+	f.errfileObj.Close()
 }
 
 func main() {
-	log := Newlog("error")
+	log := NewFileLogger("info", "/", "xx.log", 10*1024*1024)
 	for {
 		log.Debug("这是Debug日志")
 		log.Info("这是Info日志")
