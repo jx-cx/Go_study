@@ -79,11 +79,12 @@ type ConsoleLogger struct {
 	Level LogLevel
 }
 
+//判断是否需要记录该日志
 func (f *Fileogger) enable(levellog LogLevel) bool {
 	return levellog >= f.level
 }
 
-// 切割文件
+// 判断文件时候需求切割
 func (f *Fileogger) checkSize(file *os.File) bool {
 	fileInfo, err := file.Stat() //获取文件的大小
 	if err != nil {
@@ -93,13 +94,14 @@ func (f *Fileogger) checkSize(file *os.File) bool {
 	return fileInfo.Size() >= f.maxFileSize
 }
 
+//记录日志的方法
 func (f *Fileogger) log(lv LogLevel, format string, a ...interface{}) {
 	if f.enable(lv) {
 		msg := fmt.Sprintf(format, a...) // 格式化赋值给msg
 		now := time.Now()
 		funcName, fileName, lineNo := getInfo(3)
 		if f.checkSize(f.fileObj) {
-			newFile, err := f.splitfile(f.fileObj)
+			newFile, err := f.spitfire(f.fileObj)
 			if err != nil {
 				return
 			}
@@ -108,7 +110,7 @@ func (f *Fileogger) log(lv LogLevel, format string, a ...interface{}) {
 		fmt.Fprintf(f.fileObj, "[%s] [%s] [%s: %s: %d] %s\n", now.Format("2006-01-02 15:04:05"), getlogString(lv), fileName, funcName, lineNo, msg)
 		if lv >= ERROR {
 			if f.checkSize(f.errfileObj) {
-				newFile, err := f.splitfile(f.errfileObj)
+				newFile, err := f.spitfire(f.errfileObj)
 				if err != nil {
 					return
 				}
@@ -119,7 +121,8 @@ func (f *Fileogger) log(lv LogLevel, format string, a ...interface{}) {
 	}
 }
 
-func (f Fileogger) splitfile(file *os.File) (*os.File, error) {
+//切割文件
+func (f Fileogger) spitfire(file *os.File) (*os.File, error) {
 	// 需要切割日志文件
 	nowStr := time.Now().Format("20060102150405000")
 	fileInfo, err := file.Stat()
@@ -142,6 +145,14 @@ func (f Fileogger) splitfile(file *os.File) (*os.File, error) {
 	}
 	// 将打开的新日志文件对象赋值给 f.fileobj
 	return fileObj, nil
+}
+
+type Logger interface {
+	Debug(format string, a ...interface{})
+	Info(format string, a ...interface{})
+	Warning(format string, a ...interface{})
+	Error(format string, a ...interface{})
+	Fatal(format string, a ...interface{})
 }
 
 func (f *Fileogger) Debug(format string, a ...interface{}) {
@@ -207,6 +218,7 @@ func NewFileLogger(levelStr, fp, fn string, maxSize int64) *Fileogger {
 	return fl //按照文件路径和文件名打开
 }
 
+//根据指定的日志文件路径和文件名打开
 func (f *Fileogger) initfile() error {
 	fullFileName := path.Join(f.filepath, f.filename)
 	fileObj, err := os.OpenFile(fullFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -224,14 +236,16 @@ func (f *Fileogger) initfile() error {
 	return nil
 }
 
-//关闭文件
+// 关闭文件
 func (f *Fileogger) Close() {
 	f.fileObj.Close()
 	f.errfileObj.Close()
 }
 
+var log Logger
+
 func main() {
-	log := NewFileLogger("info", "/", "xx.log", 10*1024)
+	log = NewFileLogger("info", "/", "xx.log", 10*1024)
 	for {
 		log.Debug("这是Debug日志")
 		log.Info("这是Info日志")
