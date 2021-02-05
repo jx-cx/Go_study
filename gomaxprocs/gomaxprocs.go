@@ -17,7 +17,7 @@ func a() {
 func b() {
 	defer wg.Done()
 	for i := 0; i < 10; i++ {
-		fmt.Printf("B:%d \n", i)
+		fmt.Printf("B:%d  \n", i)
 	}
 }
 
